@@ -1,1 +1,33 @@
-# humhub-module-performance_insights
+Humhub Module: Performance Insights
+========================================================
+
+## Requirements
+
+- PHP 5.5 or higher
+- HumHub 1.2.2 or higher
+
+## Installation
+
+To install the module, extract the content of the .zip file into the HumHub
+module folder: `humhub/protected/modules/performance_insights`.
+
+The module then shows up in the Adminitration menu of HumHub where it
+can be installed by clicking the "Install" button.
+
+Add following code in composer.json file
+
+        "require": {
+            "jonnyw/php-phantomjs": "4.*"
+        },
+        "config": {
+            "bin-dir": "bin"
+        },
+        "scripts": {
+            "post-install-cmd": [
+                "PhantomInstaller\\Installer::installPhantomJS"
+            ],
+            "post-update-cmd": [
+                "PhantomInstaller\\Installer::installPhantomJS"
+            ]
+        }
+Finally, update composer

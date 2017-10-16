@@ -1,0 +1,11 @@
+{
+	"id": "performance_insights",
+	"name":"Performace Insights",
+	"description":"Analyze your Humhub site’s speed",
+	"keywords": [],
+	"version": "1.0.0",
+	"humhub": {
+		"minVersion": "1.1"
+	},
+	"screenshots": ["assets/screen1.jpg", "assets/screen2.jpg", "assets/screen3.jpg"]
+}
