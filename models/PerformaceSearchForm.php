@@ -1,14 +1,14 @@
 <?php
-
 namespace humhub\modules\performance_insights\models;
 
 use Yii;
 use yii\base\Model;
 
-
+/*
+ *  Validates directory search form
+ */
 class PerformaceSearchForm extends Model
 {
-
 	public $keyword;
 	public $searchUrl;
 	
@@ -18,6 +18,5 @@ class PerformaceSearchForm extends Model
 			[['keyword','searchUrl'], 'required'],
 			[['keyword'], 'string']
 		];
-	}
-	
+	}	
 }

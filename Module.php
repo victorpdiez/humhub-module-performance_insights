@@ -1,5 +1,4 @@
 <?php
-
 namespace humhub\modules\performance_insights;
 
 use Yii;

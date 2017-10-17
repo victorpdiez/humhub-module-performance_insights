@@ -11,4 +11,3 @@ $this->beginContent('@admin/views/layouts/main.php') ?>
 	<?= ModelPopup::widget();  ?>
 </div>
 <?php $this->endContent(); ?>
-

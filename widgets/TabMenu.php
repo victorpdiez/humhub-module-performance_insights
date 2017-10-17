@@ -1,17 +1,12 @@
 <?php
-
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\performance_insights\widgets;
 
 use Yii;
 use yii\helpers\Url;
 
-
+/*
+ *  Render TabMenu in Admin section
+ */
 class TabMenu extends \humhub\widgets\BaseMenu 
 {
 
@@ -25,13 +20,13 @@ class TabMenu extends \humhub\widgets\BaseMenu
     'url' => Url::to(['/performance_insights/admin/test']),
     'sortOrder' => 100,
     'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'performance_insights' && Yii::$app->controller->id == 'admin'&& Yii::$app->controller->action->id == 'test'),
-    ));
+  ));
    $this->addItem(array(
     'label' =>Yii::t('PerformanceInsightsModule.base', 'Settings'),
     'url' => Url::to(['/performance_insights/admin/index']),
     'sortOrder' => 101,
     'isActive' => (Yii::$app->controller->module && Yii::$app->controller->module->id == 'performance_insights' && Yii::$app->controller->id == 'admin' && Yii::$app->controller->action->id == 'index'),
-    ));     
+  ));     
 
    parent::init();
  }

@@ -22,5 +22,8 @@ return [
 'Generate fake data for testing.'=>'Genere datos falsos para la prueba.',
 'Analyze'=>'Analizar',
 'Start Test'=>'Iniciar prueba',
-'Enter search keyword...'=>'Ingrese la palabra clave de búsqueda ...'
+'Enter search keyword...'=>'Ingrese la palabra clave de búsqueda ...',
+'not recommended'=>'no recomendado',
+'Url contain redirects.Please enter valid url'=>'La URL contiene redireccionamientos. Por favor, introduzca la URL válida.',
+'Find Directory Search Performance'=>'Buscar el rendimiento de búsqueda de directorios'
 ];

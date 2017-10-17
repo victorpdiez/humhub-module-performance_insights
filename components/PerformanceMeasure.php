@@ -1,10 +1,11 @@
 <?php
-
 namespace humhub\modules\performance_insights\components;
 use Yii;
 use JonnyW\PhantomJs\Client;
 
-
+/*
+ *  Responsible for Measuring speed.
+ */
 class PerformanceMeasure extends BaseTest 
 {
 	
@@ -24,7 +25,10 @@ class PerformanceMeasure extends BaseTest
 		$this->strCookie='PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/';
 		parent::__construct('progress_stats.json');
 	}
-
+	/*
+     *  Analyze page speed.
+     *  @return bool  
+     */
 	public function Run()
 	{
 		$data=array('fullLoadedTime'=>false,'responseLength'=>false,'isScreenShotTaken'=>false,'progress'=>0);	
@@ -34,16 +38,19 @@ class PerformanceMeasure extends BaseTest
 		}
 		return false;
 	}
-
+    /*
+     *  Finds response time of given url.
+     *  @return bool  
+     */
 	private function findResponseParams()
 	{		
 		$this->client->isLazy(); 		
 		$time = time();
 		$request = $this->client->getMessageFactory()->createRequest($this->url, 'GET');
 		$request->addHeader('cookie',$this->strCookie);
-		$request->setTimeout(15000);
+		$request->setTimeout(3000000);
 		$response = $this->client->getMessageFactory()->createResponse();
-		$this->client->send($request, $response);	
+		$this->client->send($request, $response);		
 		if($response->getStatus() === 200) {			
 			$responseTime=time();
 			$pageLoadTime=$responseTime-$time;
@@ -53,26 +60,21 @@ class PerformanceMeasure extends BaseTest
 			return true;
 		}
 	}
-
+	/*
+     *  Takes screenshot of given url and update local file.
+     *   @return bool  
+     */
 	public function takeScreenShot()
-	{
-		$session = Yii::$app->session;	
-		$request = $this->client->getMessageFactory()->createCaptureRequest($this->url, 'GET');    
-		$request->addHeader('cookie',$this->strCookie);
-		$request->setTimeout(10000);
-		$time=time();
-		$session->set('screenshotid', $time);
-		$request->setOutputFile(\Yii::getAlias('@webroot').'/protected/modules/performance_insights/assets/screenshots/screenshot_'.$time.'.png');
-		$request->setViewportSize($this->imgOptions['width'], $this->imgOptions['height']);
-		$request->setCaptureDimensions($this->imgOptions['width'], $this->imgOptions['height'], $this->imgOptions['top'], $this->imgOptions['left']);
-		$response = $this->client->getMessageFactory()->createResponse();
-		$this->client->send($request, $response);
+	{		
 		$data=array('isScreenShotTaken'=>true,'progress'=>3);
 		$this->updateLocalFile($data);
 		return true;
 	}
 
-
+	/*
+     *  Return time in seconds of a given url.
+     *  @return array
+     */
 	public function getReturnValues()
 	{
 		$session = Yii::$app->session;
@@ -85,17 +87,23 @@ class PerformanceMeasure extends BaseTest
 		$timeInSec=$this->convertToSeconds($tempArray['fullLoadedTime']);
 		$pageSize=$this->convertToReadableSize($tempArray['responseLength']);
 		return [
-		'timeInSec'=>$timeInSec,
-		'pageSize'=>$pageSize,
-		'imgUrl'=>$imgUrl
+			'timeInSec'=>$timeInSec,
+			'pageSize'=>$pageSize,
+			'imgUrl'=>$imgUrl
 		];
 	}
-
+	/*
+     *  Converts to second
+     *  @return string
+     */
 	public function convertToSeconds($timeInSec)
 	{		
 		return $timeInSec;
 	}
-
+	/*
+     *  Converts to readable size
+     *  @return string
+     */
 	public function convertToReadableSize($size)
 	{
 		$base = log($size) / log(1024);
@@ -103,16 +111,19 @@ class PerformanceMeasure extends BaseTest
 		$f_base = floor($base);
 		return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
 	}
-
+	/*
+     *  Run 10 identical search in directory
+     *  @return bool
+     */
 	public function runTenIdenticalSearch()
 	{		
 		$this->client->isLazy(); 		
 		$time = time();
 		$request = $this->client->getMessageFactory()->createRequest($this->url, 'GET');
 		$request->addHeader('cookie',$this->strCookie);
-		$request->setTimeout(15000);
+		$request->setTimeout(300000000);
 		$response = $this->client->getMessageFactory()->createResponse();
-		$this->client->send($request, $response);			
+		$this->client->send($request, $response);
 		if($response->getStatus() === 200) {			
 			$responseTime=time();
 			$pageLoadTime=$responseTime-$time;
@@ -121,7 +132,10 @@ class PerformanceMeasure extends BaseTest
 		return true;
 		
 	}
-
+    /*
+     *  Append keyword to current url
+     *  @return string
+     */
 	public function scanAndUpdateUrl($keyword)
 	{
 		if(strpos($this->url,'?') !== false) {

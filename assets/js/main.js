@@ -90,7 +90,8 @@ var performace_insight = {
       data: this.form.serialize(),
       success: function( data, textStatus, jQxhr ){
         performace_insight.afterTestSuccess(ele);
-        performace_insight.reloadGrid();             
+        performace_insight.reloadGrid();   
+        setTimeout(function(){ $('.alert-dismissable').hide(); }, 1000);          
       },
       error: function( jqXhr, textStatus, errorThrown ){
 
@@ -108,8 +109,7 @@ var performace_insight = {
       success: function(data, textStatus, jQxhr ){
         performace_insight.afterTestSuccess(ele);
         performace_insight.reloadGrid();
-        /*$('.alert-control').append(data.message).show(); 
-        $(ele).remove();*/
+        setTimeout(function(){ $('.alert-dismissable').hide(); }, 1000);
       },
       error: function( jqXhr, textStatus, errorThrown ){
 
@@ -126,9 +126,18 @@ var performace_insight = {
       data: this.piForm.serialize(),
       dataType: "json",
       success: function( data, textStatus, jQxhr ){
+        $('#redirect-message').hide();
         performace_insight.afterTestSuccess(ele);
-        performace_insight.displayPerformanceResult(data);        
         clearInterval(interval);
+        if(data.success){
+          performace_insight.displayPerformanceResult(data);
+        }else{
+          $('#performace-result').hide();
+          $('#redirect-message').show();
+          setTimeout(function(){ $('#redirect-message').hide(); }, 3000);
+        }
+        
+        
       },
       error: function( jqXhr, textStatus, errorThrown ){
 
@@ -197,8 +206,8 @@ animateCounter:function(input){
     $(this).prop('Counter',0).animate({ Counter: input}, {
       duration: 1000,
       easing: 'swing',
-      step: function () {
-        $(this).text(Math.ceil(this.Counter) +'s');
+      step: function () {        
+        $(this).text(Math.ceil(this.Counter * 100)/100+' s');
       }
     });
   });
