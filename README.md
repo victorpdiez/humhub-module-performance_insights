@@ -32,8 +32,7 @@ Add following code in composer.json file
         }
 Finally, update composer
 
-## Features  
-
+## Features
 
 -Generate fake data for testing - Spaces and Users
 
