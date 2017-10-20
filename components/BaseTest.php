@@ -8,17 +8,18 @@ class BaseTest
 {
 
 	private $jsonFilePath;
+/**
+  * @inheritdoc
+  */
+public function __construct($file=null)
+{
+  $this->jsonFile='test_history.json';	
+  if($file){
+   $this->jsonFile=$file;			
+ }				
+}
 
-	public function __construct($file=null)
-	{
-		$this->jsonFile='test_history.json';	
-		if($file)
-		{
-			$this->jsonFile=$file;			
-		}				
-	}
-
-  /*  
+  /**  
    *  returns json file path
    *  @return string 
    */
@@ -30,8 +31,9 @@ class BaseTest
   	return $this->jsonFilePath;
   }
 
-  /*  
+  /**  
    *  write to json file
+   *  @param array $data
    *  @return bool  
    */
   protected function writeToLocalFile($data)
@@ -49,8 +51,9 @@ class BaseTest
   	return true;
   }
 
-  /*  
+  /** 
    *  update json file
+   *  @param array $data
    *  @return bool  
    */
   protected function updateLocalFile($data)
@@ -66,16 +69,18 @@ class BaseTest
   	return true;
   }
 
-  /*  
+  /**  
    *  read json file
+   *  @return string 
    */
   public function readFromLocalFile()
   {
   	return file_get_contents($this->getJsonFilePath());
   }
 
-  /*  
+  /**  
    *  delete selected items
+   *  @param string $type
    *  @return bool  
    */
   protected function deleteSelectedLocalItems($type='space')
@@ -95,8 +100,9 @@ class BaseTest
   	return true;
   }
 
-  /*  
+  /**  
    *  check selected item exist or not
+   *  @param string $type
    *  @return bool  
    */
   public function isTestItemExist($type='space')

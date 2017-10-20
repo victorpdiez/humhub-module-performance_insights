@@ -19,6 +19,9 @@ class GenerateSpace extends BaseTest implements TestInterface
 	private $userId;
 	private $spaceCounter;
 
+ /**
+  * @inheritdoc
+  */
 	public function __construct($number=false)
 	{
 		$this->number=$number;
@@ -26,7 +29,7 @@ class GenerateSpace extends BaseTest implements TestInterface
 		$this->spaceCounter=0;
 		parent::__construct('test_history.json');
 	}
-   /*
+   /**
     *  Generate Faker Spaces.
     *  @return bool  
     */
@@ -45,7 +48,7 @@ class GenerateSpace extends BaseTest implements TestInterface
     	$this->writeToLocalFile($data);	
     	return true;			
     }
-   /*
+   /**
     *  Remove Faker Generated Spaces.
     */
    public function deleteData(){
@@ -60,7 +63,7 @@ class GenerateSpace extends BaseTest implements TestInterface
    	}
    	$this->deleteSelectedLocalItems('space');
    }
-   /*
+   /**
     *  returns Space Model.
     *  @return string  
     */
@@ -73,7 +76,7 @@ class GenerateSpace extends BaseTest implements TestInterface
    	return $model;
    }
 
-   /*
+   /**
     *  reads json file and grab all id before delete test spaces.
     *  @return string  
     */

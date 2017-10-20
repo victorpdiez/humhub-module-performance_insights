@@ -14,7 +14,9 @@ class PerformanceMeasure extends BaseTest
 	private $client;
 	private $strCookie;
 	public  $imgOptions=[];
-
+   /**
+     * @inheritdoc
+     */
 	public function __construct($url)
 	{
 		$this->url=$url;
@@ -25,7 +27,7 @@ class PerformanceMeasure extends BaseTest
 		$this->strCookie='PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/';
 		parent::__construct('progress_stats.json');
 	}
-	/*
+	/**
      *  Analyze page speed.
      *  @return bool  
      */
@@ -38,29 +40,29 @@ class PerformanceMeasure extends BaseTest
 		}
 		return false;
 	}
-    /*
+    /**
      *  Finds response time of given url.
      *  @return bool  
      */
-	private function findResponseParams()
-	{		
-		$this->client->isLazy(); 		
-		$time = time();
-		$request = $this->client->getMessageFactory()->createRequest($this->url, 'GET');
-		$request->addHeader('cookie',$this->strCookie);
-		$request->setTimeout(3000000);
-		$response = $this->client->getMessageFactory()->createResponse();
-		$this->client->send($request, $response);		
-		if($response->getStatus() === 200) {			
-			$responseTime=time();
-			$pageLoadTime=$responseTime-$time;
-			$responseLength=strlen($response->getContent());
-			$data=array('fullLoadedTime'=>$pageLoadTime,'responseLength'=>$responseLength,'progress'=>2);
-			$this->updateLocalFile($data);			
-			return true;
-		}
-	}
-	/*
+    private function findResponseParams()
+    {		
+    	$this->client->isLazy(); 		
+    	$time = time();
+    	$request = $this->client->getMessageFactory()->createRequest($this->url, 'GET');
+    	$request->addHeader('cookie',$this->strCookie);
+    	$request->setTimeout(3000000);
+    	$response = $this->client->getMessageFactory()->createResponse();
+    	$this->client->send($request, $response);		
+    	if($response->getStatus() === 200) {			
+    		$responseTime=time();
+    		$pageLoadTime=$responseTime-$time;
+    		$responseLength=strlen($response->getContent());
+    		$data=array('fullLoadedTime'=>$pageLoadTime,'responseLength'=>$responseLength,'progress'=>2);
+    		$this->updateLocalFile($data);			
+    		return true;
+    	}
+    }
+	/**
      *  Takes screenshot of given url and update local file.
      *   @return bool  
      */
@@ -71,7 +73,7 @@ class PerformanceMeasure extends BaseTest
 		return true;
 	}
 
-	/*
+	/**
      *  Return time in seconds of a given url.
      *  @return array
      */
@@ -92,16 +94,18 @@ class PerformanceMeasure extends BaseTest
 			'imgUrl'=>$imgUrl
 		];
 	}
-	/*
+	/**
      *  Converts to second
+     *  @param string $timeInSec
      *  @return string
      */
 	public function convertToSeconds($timeInSec)
 	{		
 		return $timeInSec;
 	}
-	/*
+	/**
      *  Converts to readable size
+     *  @param string $size
      *  @return string
      */
 	public function convertToReadableSize($size)
@@ -111,7 +115,7 @@ class PerformanceMeasure extends BaseTest
 		$f_base = floor($base);
 		return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
 	}
-	/*
+	/**
      *  Run 10 identical search in directory
      *  @return bool
      */
@@ -132,18 +136,19 @@ class PerformanceMeasure extends BaseTest
 		return true;
 		
 	}
-    /*
+    /**
      *  Append keyword to current url
+     *  @param string $keyword
      *  @return string
      */
-	public function scanAndUpdateUrl($keyword)
-	{
-		if(strpos($this->url,'?') !== false) {
-			$url=$this->url.'&keyword='.$keyword;
-		} else {
-			$url=$this->url.'?keyword='.$keyword;
-		}
-		return $url;
-	}
+    public function scanAndUpdateUrl($keyword)
+    {
+    	if(strpos($this->url,'?') !== false) {
+    		$url=$this->url.'&keyword='.$keyword;
+    	} else {
+    		$url=$this->url.'?keyword='.$keyword;
+    	}
+    	return $url;
+    }
 
 }

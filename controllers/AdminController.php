@@ -9,6 +9,8 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\performance_insights\models\PerformaceTestForm;
 use humhub\modules\performance_insights\models\PerformaceSearchForm;
 use humhub\modules\performance_insights\components\PerformanceMeasure;
+use humhub\modules\performance_insights\models\PerformanceTestHistory;
+use humhub\modules\performance_insights\models\PerformanceTestHistorySearch;
 use humhub\modules\performance_insights\components\BaseTest;
 
 ini_set('memory_limit', '-1');
@@ -19,14 +21,17 @@ ini_set('max_execution_time', 0);
  */
 class AdminController extends Controller 
 {
-
-    public function init() 
-    {
-        $this->subLayout = '/layouts/tab_layout';
-        return parent::init();
-    }
-    /*
-     *  Render Test spaces and Test user Button. 
+   /**
+     * @inheritdoc
+     */
+   public function init() 
+   {
+    $this->subLayout = '/layouts/tab_layout';
+    return parent::init();
+   }
+    /**
+     *  Render Test spaces and Test user Button.
+     *  @return mixed 
      */
     public function actionIndex() 
     {
@@ -49,8 +54,9 @@ class AdminController extends Controller
                 'isDeleteUserButtonHidden' => $isDeleteUserButtonHidden
             ]);
         }
-        /*
-         *  Render url and directory search. 
+        /**
+         *  Render url and directory search.
+         *  @return mixed  
          */
         public function actionTest() 
         {
@@ -71,6 +77,10 @@ class AdminController extends Controller
                     if ($performanceMeasure->run() && $this->validateUrl($url)) 
                     {
                         $returnValues = $performanceMeasure->getReturnValues();
+                        $PerformanceTestHistory= new PerformanceTestHistory();
+                        $PerformanceTestHistory->url =$url;
+                        $PerformanceTestHistory->page_load_time=$returnValues['timeInSec'];
+                        $PerformanceTestHistory->save(false);
                         return
                         [
                             'success'=>true,
@@ -88,8 +98,9 @@ class AdminController extends Controller
                 }
                 return $this->render('test', ['performaceTestForm' => $performaceTestForm, 'performaceSearchForm' => $performaceSearchForm, 'urls' => array_keys($urls)]);
             }
-            /*
+            /**
              *  Ajax request for directory search
+             *  @return array  
              */
             public function actionTestSearch()
             {
@@ -119,6 +130,10 @@ class AdminController extends Controller
                             $totalTimeTaken+=$timeTaken;
                         }
                         $avgTimeTaken = $totalTimeTaken / 10;
+                        $PerformanceTestHistory= new PerformanceTestHistory();
+                        $PerformanceTestHistory->url =$url;
+                        $PerformanceTestHistory->page_load_time=$avgTimeTaken;
+                        $PerformanceTestHistory->save(false);
                         $response['output'] = $avgTimeTaken;
                         $response['success'] = true;
 
@@ -126,11 +141,12 @@ class AdminController extends Controller
                         \Yii::$app->end();
                     }
                 }
-                 /*
+                 /**
                   *  Ajax request for Generating Faker Data
+                  *  @return null  
                   */
-                public function actionGenerate() 
-                {
+                 public function actionGenerate() 
+                 {
                     if (Yii::$app->request->post()) {
                         $className = $this->getClassName();
                         $test = new $className(Yii::$app->request->post('number'));
@@ -139,11 +155,12 @@ class AdminController extends Controller
                         Yii::$app->session->setFlash('success', Yii::t('PerformanceInsightsModule.base', "Success! {X} Test {content} generated successfully.", ['{content}' => $type . 's', '{X}' => Yii::$app->request->post('number')]));
                     }
                 }
-                 /*
+                 /**
                   *  Ajax request for Delete Faker Data
+                  *  @return null  
                   */
-                public function actionDelete() 
-                {
+                 public function actionDelete() 
+                 {
                     if (Yii::$app->request->post()) {
                         $className = $this->getClassName();
                         $test = new $className(Yii::$app->request->post('number'));
@@ -152,11 +169,12 @@ class AdminController extends Controller
                         Yii::$app->session->setFlash('success', Yii::t('PerformanceInsightsModule.base', "Success! Test {content} deleted successfully.", ['{content}' => $type . 's']));
                     }
                 }
-                 /*
+                 /**
                   *  Ajax request for current progress
+                  *  @return array  
                   */
-                public function actionCurrentProgress() 
-                {
+                 public function actionCurrentProgress() 
+                 {
                     Yii::$app->response->format = Response::FORMAT_JSON;
                     $baseTest = new BaseTest('progress_stats.json');
                     $inp = $baseTest->readFromLocalFile();
@@ -165,23 +183,24 @@ class AdminController extends Controller
                         'progress' => $tempArray['progress']
                     ];
                 }
-                 /*
+                 /**
                   *  detemine class for testing
                   *  @return string
                   */
-                private function getClassName() 
-                {
+                 private function getClassName() 
+                 {
                     $type = ucfirst(Yii::$app->request->post('type'));
                     $componentNameSpace = '\humhub\modules\performance_insights\components';
                     $className = 'Generate' . $type;
                     return $componentNameSpace . "\\" . $className;
                 }
-                 /*
+                 /**
                   *  find directory search url
+                  *  @param string $keyword
                   *  @return string  
                   */
-                private function getSearchUrl($keyword = false) 
-                {
+                 private function getSearchUrl($keyword = false) 
+                 {
                     if (Yii::$app->hasModule('categories_and_types')) {
                         $globalSearchUrl = Yii::$app->urlManager->createAbsoluteUrl(['categories_and_types/search/index', 'keyword' => $keyword]);
 
@@ -197,12 +216,13 @@ class AdminController extends Controller
                         'members' => $membersSearchUrl
                     ];
                 }
-                 /*
+                 /**
                   *  find url contain redirect
+                  *  @param string $url
                   *  @return bool  
                   */
-                private function validateUrl($url)
-                {
+                 private function validateUrl($url)
+                 {
                     $ch = curl_init($url);
                     curl_setopt($ch, CURLOPT_NOBODY, 1);
                     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); 
@@ -214,6 +234,54 @@ class AdminController extends Controller
                         return false;
                     }
                     return true;
+                }
+
+                /**
+                 *  Render Test History.
+                 *  @return mixed  
+                 */
+                public function actionTestHistory() 
+                {
+
+                   $searchModel = new PerformanceTestHistorySearch();
+                   $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                   return $this->render('test-history', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+               }
+                /**
+                 *  Delete selected Tests. 
+                 *  @return array
+                 */
+                Public function actionDeleteSelected(){
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    $checkBoxIds=Yii::$app->request->post('checkBoxId');
+                    $transaction=Yii::$app->db->beginTransaction();
+                    try
+                    {
+                        $deleteCounter=0;
+                        foreach($checkBoxIds as $id){
+                            $performanceHistory=PerformanceTestHistory::find()->where(['id'=>$id])->one();
+                            if($performanceHistory){
+                                $deleteCounter++;
+                                $performanceHistory->delete();
+                            }
+                        }
+                        $outcome='success';
+                        $message=Yii::t('PerformanceInsightsModule.base', "Success! {X} Test deleted successfully.", ['{X}' => $deleteCounter]);
+                        $transaction->commit();
+                    }catch(Exception $e)
+                    {
+                        $outcome='error';
+                        $message=Yii::t('PerformanceInsightsModule.base', "Sorry! Something went wrong.");
+                        $transaction->rollback();
+                    }
+
+                    return [
+                        'message'=>$message,
+                        'outcome'=>$outcome
+                    ];
                 }
 
             }

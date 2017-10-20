@@ -4,7 +4,7 @@ namespace humhub\modules\performance_insights\models;
 use Yii;
 use yii\base\Model;
 
-/*
+/**
  *  Validates page form
  */
 class PerformaceTestForm extends Model

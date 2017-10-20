@@ -4,7 +4,7 @@ namespace humhub\modules\performance_insights\models;
 use Yii;
 use yii\base\Model;
 
-/*
+/**
  *  Validates directory search form
  */
 class PerformaceSearchForm extends Model

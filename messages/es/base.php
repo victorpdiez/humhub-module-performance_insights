@@ -25,5 +25,11 @@ return [
 'Enter search keyword...'=>'Ingrese la palabra clave de búsqueda ...',
 'not recommended'=>'no recomendado',
 'Url contain redirects.Please enter valid url'=>'La URL contiene redireccionamientos. Por favor, introduzca la URL válida.',
-'Find Directory Search Performance'=>'Buscar el rendimiento de búsqueda de directorios'
+'Find Directory Search Performance'=>'Buscar el rendimiento de búsqueda de directorios',
+'Performance Test Histories'=>'Historiales de prueba de rendimiento',
+'Delete Selected'=>'Eliminar seleccionado',
+'Apply'=>'Aplicar',
+'Test History'=>'Historial de prueba',
+'Success! {X} Test deleted successfully.'=>'¡Éxito! {X} Prueba borrada con éxito.',
+'Sorry! Something went wrong.'=>'¡Lo siento! Algo salió mal.'
 ];

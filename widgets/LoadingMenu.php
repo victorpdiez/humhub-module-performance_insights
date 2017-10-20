@@ -5,7 +5,7 @@ use Yii;
 use yii\helpers\Url;
 use humhub\components\Widget;
 
-/*
+/**
  *  Render Loading Icon
  */
 class LoadingMenu extends Widget 

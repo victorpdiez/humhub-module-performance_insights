@@ -11,11 +11,12 @@ class Assets extends AssetBundle
     public $sourcePath;
 
     public $js = [        
-    'js/main.js'
+        'js/main.js',
+        'js/performaceHistory.js'
     ];
 
     public $css = [
-    'css/style.css'
+        'css/style.css'
     ];
 
     public function init() {
