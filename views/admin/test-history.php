@@ -16,8 +16,8 @@ humhub\modules\performance_insights\Assets::register($this);
 <?php
 $this->title = Yii::t('PerformanceInsightsModule.base', "Performance Test Histories");
 $this->params['breadcrumbs'][] = $this->title;
-echo Html::dropDownList('listname', 0, ['0'=>Yii::t('PerformanceInsightsModule.base', "Delete Selected")],['class'=>'form-control','id'=>'performance-actions']);
-echo Html::Button(Yii::t('PerformanceInsightsModule.base', "Apply"), ['class'=> 'btn btn-primary','id'=>'performance-action-button']) ;
+echo Html::dropDownList('listname', 0, ['0'=>Yii::t('PerformanceInsightsModule.base', "Delete Selected")],['class'=>'form-control','id'=>'performance-actions','style'=>'display:none;']);
+echo Html::Button(Yii::t('PerformanceInsightsModule.base', "Delete Selected"), ['class'=> 'btn btn-danger','id'=>'performance-action-button']) ;
 ?>
 
 <br/>
@@ -26,7 +26,7 @@ echo Html::Button(Yii::t('PerformanceInsightsModule.base', "Apply"), ['class'=> 
 
 <div class="performance-test-history-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php Pjax::begin(['id' => 'pjax-grid-view']); ?>   
