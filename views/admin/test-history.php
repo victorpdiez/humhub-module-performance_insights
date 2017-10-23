@@ -21,12 +21,12 @@ echo Html::Button(Yii::t('PerformanceInsightsModule.base', "Delete Selected"), [
 ?>
 
 <br/>
-<br/>
+
 
 
 <div class="performance-test-history-index">
 
-    
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <?php Pjax::begin(['id' => 'pjax-grid-view']); ?>   
@@ -35,7 +35,9 @@ echo Html::Button(Yii::t('PerformanceInsightsModule.base', "Delete Selected"), [
         'tableOptions' => ['class' => 'table table-hover table-history'],
         'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\CheckboxColumn'],
+             ['class' => 'yii\grid\CheckboxColumn',
+            'checkboxOptions' => ['style'=>'margin-bottom: 0px;']
+            ],
             [
                 'attribute' => 'url',
                 'format' => 'url'

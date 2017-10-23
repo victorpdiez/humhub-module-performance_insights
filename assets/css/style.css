@@ -230,3 +230,6 @@ form#pi-form{
   .alert-success{
     background-color: #d5efc1 !important;
   }
+  table thead tr th label{
+    margin-bottom: -5px !important;
+}
