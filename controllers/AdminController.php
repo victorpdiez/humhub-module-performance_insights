@@ -5,6 +5,7 @@ use Yii;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
 use yii\helpers\Url;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\performance_insights\models\PerformaceTestForm;
 use humhub\modules\performance_insights\models\PerformaceSearchForm;
@@ -21,6 +22,13 @@ ini_set('max_execution_time', 0);
  */
 class AdminController extends Controller 
 {
+  public function getAccessRules() {
+        return [
+        ['permissions' => [
+        ManageModules::className()
+        ]],
+        ];
+    }
    /**
      * @inheritdoc
      */
