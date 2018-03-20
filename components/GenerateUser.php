@@ -73,7 +73,7 @@ class GenerateUser extends BaseTest implements TestInterface
    {
    	$user=new User();
    	$user->scenario = 'registration';
-   	$user->username=$this->user_name_prefix . '_'.time() . ++$this->userNameCounter;
+   	$user->username=$this->user_name_prefix . '_' . time() . ++$this->userNameCounter;
    	$user->email=time() . ++$this->emailCounter . $this->faker->unique()->email;
    	$user->language = Yii::$app->language;
    	$user->status = User::STATUS_ENABLED;
@@ -88,7 +88,7 @@ class GenerateUser extends BaseTest implements TestInterface
    private function generateProfile()
    {
    	$profile = new Profile();
-   	$profile->firstname = $this->user_name_prefix . '_'.$this->faker->firstName;
+   	$profile->firstname = $this->user_name_prefix . '_' . $this->faker->firstName;
    	$profile->lastname = $this->faker->lastName;
    	$profile->user_id = $this->userId;
    	$profile->save(false);
