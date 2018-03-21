@@ -16,7 +16,8 @@ class PerformanceMeasure extends BaseTest
 	private $client;
 	private $strCookie;
 	public  $imgOptions=[];
-   /**
+
+    /**
      * @inheritdoc
      */
 	public function __construct($url)
@@ -29,7 +30,8 @@ class PerformanceMeasure extends BaseTest
 		$this->strCookie = 'PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/';
 		parent::__construct('progress_stats.json');
 	}
-	/**
+
+    /**
      *  Analyze page speed.
      *  @return bool  
      */
@@ -42,6 +44,7 @@ class PerformanceMeasure extends BaseTest
 		}
 		return false;
 	}
+
     /**
      *  Finds response time of given url.
      *  @return bool  
@@ -64,7 +67,8 @@ class PerformanceMeasure extends BaseTest
     		return true;
     	}
     }
-	/**
+
+    /**
      *  Takes screenshot of given url and update local file.
      *   @return bool  
      */
@@ -75,7 +79,7 @@ class PerformanceMeasure extends BaseTest
 		return true;
 	}
 
-	/**
+    /**
      *  Return time in seconds of a given url.
      *  @return array
      */
@@ -96,7 +100,8 @@ class PerformanceMeasure extends BaseTest
 			'imgUrl' => $imgUrl
 		];
 	}
-	/**
+
+    /**
      *  Converts to second
      *  @param string $timeInSec
      *  @return string
@@ -105,7 +110,8 @@ class PerformanceMeasure extends BaseTest
 	{		
 		return $timeInSec;
 	}
-	/**
+
+    /**
      *  Converts to readable size
      *  @param string $size
      *  @return string
@@ -117,7 +123,8 @@ class PerformanceMeasure extends BaseTest
 		$f_base = floor($base);
 		return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
 	}
-	/**
+
+    /**
      *  Run 10 identical search in directory
      *  @return bool
      */
@@ -138,6 +145,7 @@ class PerformanceMeasure extends BaseTest
 		return true;
 		
 	}
+
     /**
      *  Append keyword to current url
      *  @param string $keyword
