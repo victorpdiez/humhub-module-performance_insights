@@ -8,12 +8,12 @@ class m171009_114558_performace_insight_init extends Migration
 	{
         $tableSchema = Yii::$app->db->schema->getTableSchema('performance_test_history');
         if ($tableSchema == null) {
-           $this->createTable('performance_test_history', array(
+           $this->createTable('performance_test_history', [
               'id' => 'pk',
               'url' => 'Text',
               'page_load_time' => 'int(11) NOT NULL',
               'report_time'=> 'int(11) NOT NULL'
-          ), '');
+          ], '');
        }
    }
 
