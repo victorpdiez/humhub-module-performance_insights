@@ -1,6 +1,9 @@
 <?php
+
 namespace humhub\modules\performance_insights\components;
+
 use Yii;
+
 /*
  *  Manage json file
  */
@@ -11,11 +14,11 @@ class BaseTest
 /**
   * @inheritdoc
   */
-public function __construct($file=null)
+public function __construct($file = null)
 {
-  $this->jsonFile='test_history.json';	
+  $this->jsonFile = 'test_history.json';	
   if($file){
-   $this->jsonFile=$file;			
+   $this->jsonFile = $file;			
  }				
 }
 
@@ -25,9 +28,9 @@ public function __construct($file=null)
    */
   protected function getJsonFilePath()
   {		
-  	$module= Yii::$app->moduleManager->getModule('performance_insights');
+  	$module = Yii::$app->moduleManager->getModule('performance_insights');
   	$moduleBasePath = $module->getBasePath();	
-  	$this->jsonFilePath=$moduleBasePath . DIRECTORY_SEPARATOR .'test_history'.DIRECTORY_SEPARATOR.$this->jsonFile;
+  	$this->jsonFilePath = $moduleBasePath . DIRECTORY_SEPARATOR . 'test_history' . DIRECTORY_SEPARATOR . $this->jsonFile;
   	return $this->jsonFilePath;
   }
 
@@ -42,7 +45,7 @@ public function __construct($file=null)
   	{
   		$inp = $this->readFromLocalFile();
   		$tempArray = json_decode($inp,true);	
-  		$tempArray=array_merge($tempArray, $data);
+  		$tempArray = array_merge($tempArray, $data);
   	}else{
   		$tempArray=$data;
   	}		
@@ -60,9 +63,9 @@ public function __construct($file=null)
   {	
   	$inp = $this->readFromLocalFile();
   	$tempArray = json_decode($inp,true);
-  	foreach($data as $key=>$value)
+  	foreach($data as $key => $value)
   	{
-  		$tempArray[$key]=$value;
+  		$tempArray[$key] = $value;
   	}
   	$jsonData = json_encode($tempArray);
   	file_put_contents($this->getJsonFilePath(),$jsonData);
@@ -87,12 +90,12 @@ public function __construct($file=null)
   {
   	$inp = $this->readFromLocalFile();
   	$tempArray = json_decode($inp,true);
-  	$modArray=array();
-  	foreach($tempArray as $key=>$value)
+  	$modArray = [];
+  	foreach($tempArray as $key => $value)
   	{
-  		if($value['type']!=$type)
+  		if($value['type'] != $type)
   		{
-  			$modArray[]=$tempArray[$key];
+  			$modArray[] = $tempArray[$key];
   		}
   	}
   	$jsonData = json_encode($modArray);
@@ -110,10 +113,10 @@ public function __construct($file=null)
   	$inp = $this->readFromLocalFile();
   	$tempArray = json_decode($inp,true);
   	$found=0;
-  	foreach($tempArray as $key=>$value){
-  		if($value['type']==$type)
+  	foreach($tempArray as $key => $value){
+  		if($value['type'] == $type)
   		{
-  			$found++;
+  			$found ++;
   		}
   	}
   	return $found>0?true:false;

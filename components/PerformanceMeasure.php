@@ -1,5 +1,7 @@
 <?php
+
 namespace humhub\modules\performance_insights\components;
+
 use Yii;
 use JonnyW\PhantomJs\Client;
 
@@ -19,12 +21,12 @@ class PerformanceMeasure extends BaseTest
      */
 	public function __construct($url)
 	{
-		$this->url=$url;
-		$this->path=\Yii::getAlias('@webroot').'/bin/phantomjs.exe';
-		$this->client=Client::getInstance();
+		$this->url = $url;
+		$this->path = \Yii::getAlias('@webroot') . '/bin/phantomjs.exe';
+		$this->client = Client::getInstance();
 		$this->client->getEngine()->setPath($this->path);
-		$this->imgOptions=['width'=>413,'height'=>281,'top'=>0,'left'=>0];
-		$this->strCookie='PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/';
+		$this->imgOptions = ['width' => 413,'height' => 281,'top' => 0,'left' => 0];
+		$this->strCookie = 'PHPSESSID=' . $_COOKIE['PHPSESSID'] . '; path=/';
 		parent::__construct('progress_stats.json');
 	}
 	/**
@@ -33,7 +35,7 @@ class PerformanceMeasure extends BaseTest
      */
 	public function Run()
 	{
-		$data=array('fullLoadedTime'=>false,'responseLength'=>false,'isScreenShotTaken'=>false,'progress'=>0);	
+		$data = ['fullLoadedTime' => false,'responseLength' => false,'isScreenShotTaken' => false,'progress' => 0];	
 		$this->writeToLocalFile($data);
 		if($this->findResponseParams() && $this->takeScreenShot()){
 			return true;
@@ -54,10 +56,10 @@ class PerformanceMeasure extends BaseTest
     	$response = $this->client->getMessageFactory()->createResponse();
     	$this->client->send($request, $response);		
     	if($response->getStatus() === 200) {			
-    		$responseTime=time();
-    		$pageLoadTime=$responseTime-$time;
-    		$responseLength=strlen($response->getContent());
-    		$data=array('fullLoadedTime'=>$pageLoadTime,'responseLength'=>$responseLength,'progress'=>2);
+    		$responseTime = time();
+    		$pageLoadTime = $responseTime-$time;
+    		$responseLength = strlen($response->getContent());
+    		$data = ['fullLoadedTime' => $pageLoadTime,'responseLength' => $responseLength,'progress' => 2];
     		$this->updateLocalFile($data);			
     		return true;
     	}
@@ -68,7 +70,7 @@ class PerformanceMeasure extends BaseTest
      */
 	public function takeScreenShot()
 	{		
-		$data=array('isScreenShotTaken'=>true,'progress'=>3);
+		$data = ['isScreenShotTaken' => true,'progress' => 3];
 		$this->updateLocalFile($data);
 		return true;
 	}
@@ -80,18 +82,18 @@ class PerformanceMeasure extends BaseTest
 	public function getReturnValues()
 	{
 		$session = Yii::$app->session;
-		$time=$session->get('screenshotid');
-		$module= Yii::$app->moduleManager->getModule('performance_insights');
+		$time = $session->get('screenshotid');
+		$module = Yii::$app->moduleManager->getModule('performance_insights');
 		$moduleBasePath = $module->getBasePath();
-		$imgUrl=Yii::$app->getModule('performance_insights')->getAssetsUrl().'/screenshots/'.'screenshot_'.$time.'.png';
-		$inp =$this->readFromLocalFile();
+		$imgUrl = Yii::$app->getModule('performance_insights')->getAssetsUrl() . '/screenshots/' . 'screenshot_' . $time . '.png';
+		$inp = $this->readFromLocalFile();
 		$tempArray = json_decode($inp,true);
-		$timeInSec=$this->convertToSeconds($tempArray['fullLoadedTime']);
-		$pageSize=$this->convertToReadableSize($tempArray['responseLength']);
+		$timeInSec = $this->convertToSeconds($tempArray['fullLoadedTime']);
+		$pageSize = $this->convertToReadableSize($tempArray['responseLength']);
 		return [
-			'timeInSec'=>$timeInSec,
-			'pageSize'=>$pageSize,
-			'imgUrl'=>$imgUrl
+			'timeInSec' => $timeInSec,
+			'pageSize' => $pageSize,
+			'imgUrl' => $imgUrl
 		];
 	}
 	/**
@@ -111,7 +113,7 @@ class PerformanceMeasure extends BaseTest
 	public function convertToReadableSize($size)
 	{
 		$base = log($size) / log(1024);
-		$suffix = array("", "KB", "MB", "GB", "TB");
+		$suffix = ['', 'KB', 'MB', 'GB', 'TB'];
 		$f_base = floor($base);
 		return round(pow(1024, $base - floor($base)), 1) . $suffix[$f_base];
 	}
@@ -129,8 +131,8 @@ class PerformanceMeasure extends BaseTest
 		$response = $this->client->getMessageFactory()->createResponse();
 		$this->client->send($request, $response);
 		if($response->getStatus() === 200) {			
-			$responseTime=time();
-			$pageLoadTime=$responseTime-$time;
+			$responseTime = time();
+			$pageLoadTime = $responseTime-$time;
 			return $this->convertToSeconds($pageLoadTime);
 		}
 		return true;
@@ -144,9 +146,9 @@ class PerformanceMeasure extends BaseTest
     public function scanAndUpdateUrl($keyword)
     {
     	if(strpos($this->url,'?') !== false) {
-    		$url=$this->url.'&keyword='.$keyword;
+    		$url = $this->url . '&keyword=' . $keyword;
     	} else {
-    		$url=$this->url.'?keyword='.$keyword;
+    		$url = $this->url . '?keyword=' . $keyword;
     	}
     	return $url;
     }

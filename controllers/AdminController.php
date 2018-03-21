@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\performance_insights\controllers;
 
 use Yii;
@@ -29,6 +30,7 @@ class AdminController extends Controller
         ]],
         ];
     }
+
    /**
      * @inheritdoc
      */
@@ -37,6 +39,7 @@ class AdminController extends Controller
     $this->subLayout = '/layouts/tab_layout';
     return parent::init();
    }
+
     /**
      *  Render Test spaces and Test user Button.
      *  @return mixed 
@@ -62,6 +65,7 @@ class AdminController extends Controller
                 'isDeleteUserButtonHidden' => $isDeleteUserButtonHidden
             ]);
         }
+
         /**
          *  Render url and directory search.
          *  @return mixed  
@@ -85,13 +89,13 @@ class AdminController extends Controller
                     if ($performanceMeasure->run() && $this->validateUrl($url)) 
                     {
                         $returnValues = $performanceMeasure->getReturnValues();
-                        $PerformanceTestHistory= new PerformanceTestHistory();
-                        $PerformanceTestHistory->url =$url;
+                        $PerformanceTestHistory = new PerformanceTestHistory();
+                        $PerformanceTestHistory->url = $url;
                         $PerformanceTestHistory->page_load_time=$returnValues['timeInSec'];
                         $PerformanceTestHistory->save(false);
                         return
                         [
-                            'success'=>true,
+                            'success' => true,
                             'timeInSec' => $returnValues['timeInSec'],
                             'pageSize' => $returnValues['pageSize'],
                             'imgUrl' => $returnValues['imgUrl']
@@ -99,13 +103,14 @@ class AdminController extends Controller
                     }else{
                         return 
                         [
-                            'success'=>false
+                            'success' => false
                         ];
                     }
                     \Yii::$app->end();
                 }
                 return $this->render('test', ['performaceTestForm' => $performaceTestForm, 'performaceSearchForm' => $performaceSearchForm, 'urls' => array_keys($urls)]);
             }
+
             /**
              *  Ajax request for directory search
              *  @return array  
@@ -128,19 +133,19 @@ class AdminController extends Controller
                         $keys = array_keys($this->getSearchUrl($keyword));
                         $url = $urls[$performaceSearchForm->searchUrl];
                         $response['url'] = $url;
-                        $response = array();
+                        $response = [];
                         $totalTimeTaken = 0;
                         $avgTimeTaken = 0;
-                        for ($i = 0; $i < 10; $i++) 
+                        for ($i = 0; $i < 10; $i ++) 
                         {
                             $performanceMeasure = new PerformanceMeasure($url);
                             $timeTaken = $performanceMeasure->runTenIdenticalSearch($keyword);
-                            $totalTimeTaken+=$timeTaken;
+                            $totalTimeTaken += $timeTaken;
                         }
                         $avgTimeTaken = $totalTimeTaken / 10;
-                        $PerformanceTestHistory= new PerformanceTestHistory();
-                        $PerformanceTestHistory->url =$url;
-                        $PerformanceTestHistory->page_load_time=$avgTimeTaken;
+                        $PerformanceTestHistory = new PerformanceTestHistory();
+                        $PerformanceTestHistory->url = $url;
+                        $PerformanceTestHistory->page_load_time = $avgTimeTaken;
                         $PerformanceTestHistory->save(false);
                         $response['output'] = $avgTimeTaken;
                         $response['success'] = true;
@@ -238,7 +243,7 @@ class AdminController extends Controller
                     curl_exec($ch);
                     $target = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                     curl_close($ch);
-                    if ($target==302){
+                    if ($target == 302){
                         return false;
                     }
                     return true;
@@ -258,21 +263,22 @@ class AdminController extends Controller
                     'dataProvider' => $dataProvider,
                 ]);
                }
+
                 /**
                  *  Delete selected Tests. 
                  *  @return array
                  */
                 Public function actionDeleteSelected(){
                     Yii::$app->response->format = Response::FORMAT_JSON;
-                    $checkBoxIds=Yii::$app->request->post('checkBoxId');
-                    $transaction=Yii::$app->db->beginTransaction();
+                    $checkBoxIds = Yii::$app->request->post('checkBoxId');
+                    $transaction = Yii::$app->db->beginTransaction();
                     try
                     {
-                        $deleteCounter=0;
+                        $deleteCounter = 0;
                         foreach($checkBoxIds as $id){
-                            $performanceHistory=PerformanceTestHistory::find()->where(['id'=>$id])->one();
-                            if($performanceHistory){
-                                $deleteCounter++;
+                            $performanceHistory=PerformanceTestHistory::find()->where(['id' => $id])->one();
+                            if($performanceHistory) {
+                                $deleteCounter ++;
                                 $performanceHistory->delete();
                             }
                         }
@@ -281,14 +287,14 @@ class AdminController extends Controller
                         $transaction->commit();
                     }catch(Exception $e)
                     {
-                        $outcome='error';
+                        $outcome = 'error';
                         $message=Yii::t('PerformanceInsightsModule.base', "Sorry! Something went wrong.");
                         $transaction->rollback();
                     }
 
                     return [
-                        'message'=>$message,
-                        'outcome'=>$outcome
+                        'message' => $message,
+                        'outcome' => $outcome
                     ];
                 }
 
