@@ -3,10 +3,10 @@
 namespace humhub\modules\performance_insights;
 
 use yii\web\AssetBundle;
-use yii;
-use yii\web\View;
+use Yii;
+use humhub\components\View;
 
-class Assets extends AssetBundle 
+class Assets extends AssetBundle
 {
     public $sourcePath;
 
@@ -23,7 +23,7 @@ class Assets extends AssetBundle
         $baseurl = Yii::$app->request->baseUrl;
         $this->sourcePath = 'protected/modules/performance_insights/assets';
         $this->jsOptions['position']  = View::POS_BEGIN; 
-        $this->cssOptions['position'] =View::POS_BEGIN; 
+        $this->cssOptions['position'] = View::POS_BEGIN; 
         parent::init();
     }
     public $depends = ['humhub\\assets\\AppAsset'];
