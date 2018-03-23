@@ -46,6 +46,7 @@ class PerformanceTestHistory extends \yii\db\ActiveRecord
             'report_time' => 'Report Time',
         ];
     }
+
     /**
      * @inheritdoc
      */

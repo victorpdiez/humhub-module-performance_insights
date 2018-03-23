@@ -1,5 +1,7 @@
 <?php
+
 namespace humhub\modules\performance_insights\components;
+
 use Yii;
 use humhub\modules\performance_insights\interfaces\TestInterface;
 use humhub\modules\user\models\forms\Registration;
@@ -7,6 +9,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\Password;
+
 /*
  *  Manage User Testing
  */
@@ -14,11 +17,11 @@ class GenerateUser extends BaseTest implements TestInterface
 {
 
 	public  $number;
-	private $user_name_prefix='TEST_USER';
+	private $user_name_prefix = 'TEST_USER';
 	private $faker;
 	private $registration;
 	private $userId;
-	private $data=array();
+	private $data = [];
 	private $userNameCounter;
 	private $emailCounter;
  /**
@@ -26,10 +29,10 @@ class GenerateUser extends BaseTest implements TestInterface
   */
  public function __construct($number=false)
  {		
-  $this->number=$number;
+  $this->number = $number;
   $this->faker = \Faker\Factory::create();
-  $this->userNameCounter=0;
-  $this->emailCounter=0;
+  $this->userNameCounter = 0;
+  $this->emailCounter = 0;
   parent::__construct('test_history.json');		
 }
 	  /**
@@ -38,10 +41,10 @@ class GenerateUser extends BaseTest implements TestInterface
      */
    public function generateData()
    {
-    for($i=0;$i<$this->number;$i++)
+    for($i = 0; $i<$this->number; $i++)
     {
-     $user=$this->generateUser();		
-     $profile=$this->generateProfile();			
+     $user = $this->generateUser();		
+     $profile = $this->generateProfile();			
    }
    $this->writeToLocalFile($this->data);	
    return true;		
@@ -51,10 +54,10 @@ class GenerateUser extends BaseTest implements TestInterface
     */
    public function deleteData()
    {		
-   	$arrayId=$this->getAllUserId($this->readFromLocalFile());
+   	$arrayId = $this->getAllUserId($this->readFromLocalFile());
    	foreach($arrayId as $id)
    	{
-   		$user=User::find()->where(['id'=>$id])->one();
+   		$user = User::find()->where(['id' => $id])->one();
    		if($user)
    		{
    			$user->delete();
@@ -70,12 +73,12 @@ class GenerateUser extends BaseTest implements TestInterface
    {
    	$user=new User();
    	$user->scenario = 'registration';
-   	$user->username=$this->user_name_prefix.'_'.time().++$this->userNameCounter;
-   	$user->email=time().++$this->emailCounter.$this->faker->unique()->email;
+   	$user->username=$this->user_name_prefix . '_' . time() . ++$this->userNameCounter;
+   	$user->email=time() . ++$this->emailCounter . $this->faker->unique()->email;
    	$user->language = Yii::$app->language;
    	$user->status = User::STATUS_ENABLED;
-   	$this->userId=$user->save(false)?$user->id:false;
-   	$this->data[]=array('id'=>$user->id,'type'=>'user');
+   	$this->userId = $user->save(false) ? $user->id:false;
+   	$this->data[] = ['id'=>$user->id,'type'=>'user'];
    	return true;
    }	
    /**
@@ -84,9 +87,9 @@ class GenerateUser extends BaseTest implements TestInterface
     */
    private function generateProfile()
    {
-   	$profile=new Profile();
-   	$profile->firstname=$this->user_name_prefix.'_'.$this->faker->firstName;
-   	$profile->lastname=$this->faker->lastName;
+   	$profile = new Profile();
+   	$profile->firstname = $this->user_name_prefix . '_' . $this->faker->firstName;
+   	$profile->lastname = $this->faker->lastName;
    	$profile->user_id = $this->userId;
    	$profile->save(false);
    	return true;
@@ -99,15 +102,15 @@ class GenerateUser extends BaseTest implements TestInterface
    private function getAllUserId()
    {
     $input=$this->readFromLocalFile();
-    $tempArray =json_decode($input);
-    $userId=[];
+    $tempArray = json_decode($input);
+    $userId = [];
     foreach($tempArray as $key=>$array)
     {
-     if($array->type=='user')
+     if($array->type == 'user')
      {
-      $userId[]=$array->id;
+      $userId[] = $array->id;
+     }
     }
-  }
   return $userId;
-}
+   }
 }

@@ -1,5 +1,7 @@
 <?php
+
 namespace humhub\modules\performance_insights\components;
+
 use Yii;
 use humhub\modules\performance_insights\interfaces\TestInterface;
 use humhub\modules\performance_insights\components\BaseTest;
@@ -13,7 +15,7 @@ class GenerateSpace extends BaseTest implements TestInterface
 {
 
 	public  $number;
-	private $space_name_prefix='TEST_SPACE';
+	private $space_name_prefix = 'TEST_SPACE';
 	private $faker;
 	private $registration;
 	private $userId;
@@ -24,9 +26,9 @@ class GenerateSpace extends BaseTest implements TestInterface
   */
 	public function __construct($number=false)
 	{
-		$this->number=$number;
+		$this->number = $number;
 		$this->faker = \Faker\Factory::create();
-		$this->spaceCounter=0;
+		$this->spaceCounter = 0;
 		parent::__construct('test_history.json');
 	}
    /**
@@ -35,15 +37,15 @@ class GenerateSpace extends BaseTest implements TestInterface
     */
     public function generateData()
     {
-    	$data=array();
-    	for($i=0;$i<$this->number;$i++)
+    	$data = [];
+    	for($i = 0; $i < $this->number; $i ++)
     	{
-    		$model=$this->createSpaceModel();
-    		$model->name = $this->space_name_prefix.'_'.time().++$this->spaceCounter;
+    		$model = $this->createSpaceModel();
+    		$model->name = $this->space_name_prefix.'_'.time() . ++ $this->spaceCounter;
     		$model->description = $this->faker->text($maxNbChars = 45);
     		$model->color = '#d1d1d1';
     		$model->save(false);
-    		$data[]=array('id'=>$model->id,'type'=>'space');
+    		$data[] = ['id' => $model->id,'type' => 'space'];
     	}		
     	$this->writeToLocalFile($data);	
     	return true;			
@@ -52,10 +54,10 @@ class GenerateSpace extends BaseTest implements TestInterface
     *  Remove Faker Generated Spaces.
     */
    public function deleteData(){
-   	$arrayId=$this->getAllSpaceId($this->readFromLocalFile());		
+   	$arrayId = $this->getAllSpaceId($this->readFromLocalFile());		
    	foreach($arrayId as $id)
    	{
-   		$space=Space::find()->where(['id'=>$id])->one();
+   		$space=Space::find()->where(['id' => $id])->one();
    		if($space)
    		{
    			$space->delete();
@@ -83,13 +85,13 @@ class GenerateSpace extends BaseTest implements TestInterface
    private function getAllSpaceId()
    {
    	$input=$this->readFromLocalFile();
-   	$tempArray =json_decode($input);
-   	$spaceId=[];
-   	foreach($tempArray as $key=>$array)
+   	$tempArray = json_decode($input);
+   	$spaceId = [];
+   	foreach($tempArray as $key => $array)
    	{
-   		if($array->type=='space')
+   		if($array->type == 'space')
    		{
-   			$spaceId[]=$array->id;
+   			$spaceId[] = $array->id;
    		}
    	}
    	return $spaceId;
