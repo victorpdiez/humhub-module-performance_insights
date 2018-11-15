@@ -12,7 +12,7 @@ To install the module, extract the content of the .zip file into the HumHub
 module folder: `humhub/protected/modules/performance_insights`.
 
 The module then shows up in the Adminitration menu of HumHub where it
-can be installed by clicking the "Install" button.
+can be installed by clicking the "Enable" button.
 
 Add following code in composer.json file
 
