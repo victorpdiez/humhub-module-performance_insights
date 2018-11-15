@@ -3,10 +3,10 @@
 namespace humhub\modules\performance_insights;
 
 use Yii;
-use yii\base\Object;
+use yii\base\BaseObject;
 use yii\helpers\Url;
 
-class Events extends \yii\base\Object 
+class Events extends \yii\base\BaseObject 
 { 
 	public static function onAdminMenuInit($event) 
 	{
