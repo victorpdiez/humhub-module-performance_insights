@@ -21,7 +21,7 @@ class Assets extends AssetBundle
 
     public function init() {
         $baseurl = Yii::$app->request->baseUrl;
-        $this->sourcePath = 'protected/modules/performance_insights/assets';
+        $this->sourcePath = '@performance_insights/assets';
         $this->jsOptions['position']  = View::POS_BEGIN; 
         $this->cssOptions['position'] = View::POS_BEGIN; 
         parent::init();
